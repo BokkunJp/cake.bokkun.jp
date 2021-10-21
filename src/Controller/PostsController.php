@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller;
 use App\Controller\AppController;
-use App\Form\PostForm;
-class PostController extends AppController
+use App\Form\PostsForm;
+class PostsController extends AppController
 {
     public function index()
     {
@@ -16,7 +16,7 @@ class PostController extends AppController
             $data = rtrim($data, ',');
             $jsonData = json_encode($data); // データをJSON形式にエンコードする
         }else {
-            $post = new PostForm();
+            $post = new PostsForm();
             if ($this->request->is('post')) {
                 if ($post->execute($this->request->getData())) {
                     $this->request->getSession()->write('Data', $this->request->getData());
