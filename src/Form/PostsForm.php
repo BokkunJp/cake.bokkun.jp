@@ -5,7 +5,7 @@ use Cake\Form\Form;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
 
-class PostForm extends Form {
+class PostsForm extends Form {
     protected function _buildSchema(Schema $schema): Schema
     {
         return $schema->addField('data', ['type' => 'string']);
