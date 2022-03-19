@@ -1,7 +1,10 @@
 <?php
+
 namespace App\Controller;
+
 use App\Controller\AppController;
 use App\Form\PostsForm;
+
 class PostsController extends AppController
 {
     public function index()
@@ -15,7 +18,7 @@ class PostsController extends AppController
             }
             $data = rtrim($data, ',');
             $jsonData = json_encode($data); // データをJSON形式にエンコードする
-        }else {
+        } else {
             $post = new PostsForm();
             if ($this->request->is('post')) {
                 if ($post->execute($this->request->getData())) {

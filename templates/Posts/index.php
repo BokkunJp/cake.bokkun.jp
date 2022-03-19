@@ -1,4 +1,5 @@
 <?php
+
 // 必要なファイルの読み込み
 // CSS
 $this->Html->css(['layout/PC']);
@@ -10,6 +11,7 @@ echo $this->Html->script('post/post');
 echo $this->Html->script('post/index');
 
 echo $this->Form->create($post);
+debug($post);
 echo $this->Form->control('data');
 echo $this->Form->button('JSで送信', ['class'=>'jsSend', 'type' => 'button']);
 echo $this->Form->button('PHPで送信');
