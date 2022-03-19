@@ -1,11 +1,13 @@
 <?php
+
 namespace App\Form;
 
 use Cake\Form\Form;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
 
-class PostsForm extends Form {
+class PostsForm extends Form
+{
     protected function _buildSchema(Schema $schema): Schema
     {
         return $schema->addField('data', ['type' => 'string']);
@@ -24,5 +26,4 @@ class PostsForm extends Form {
         // メールを送信する
         return true;
     }
-
 }
