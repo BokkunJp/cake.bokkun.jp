@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -15,7 +14,6 @@ declare(strict_types=1);
  * @since     3.3.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
-
 namespace App;
 
 use Cake\Core\Configure;
@@ -35,6 +33,8 @@ use Cake\Routing\Middleware\RoutingMiddleware;
  *
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
+ *
+ * @extends \Cake\Http\BaseApplication<\App\Application>
  */
 class Application extends BaseApplication
 {
@@ -48,24 +48,12 @@ class Application extends BaseApplication
         // Call parent to load bootstrap from files.
         parent::bootstrap();
 
-        if (PHP_SAPI === 'cli') {
-            $this->bootstrapCli();
-        } else {
+        if (PHP_SAPI !== 'cli') {
             FactoryLocator::add(
                 'Table',
                 (new TableLocator())->allowFallbackClass(false)
             );
         }
-
-        /*
-         * Only try to load DebugKit in development mode
-         * Debug Kit should not be installed on a production system
-         */
-        if (Configure::read('debug')) {
-            $this->addPlugin('DebugKit');
-        }
-
-        // Load more plugins here
     }
 
     /**
@@ -79,7 +67,7 @@ class Application extends BaseApplication
         $middlewareQueue
             // Catch any exceptions in the lower layers,
             // and make an error page/response
-            ->add(new ErrorHandlerMiddleware(Configure::read('Error')))
+            ->add(new ErrorHandlerMiddleware(Configure::read('Error'), $this))
 
             // Handle plugin/theme assets like CakePHP normally does.
             ->add(new AssetMiddleware([
@@ -88,10 +76,8 @@ class Application extends BaseApplication
 
             // Add routing middleware.
             // If you have a large number of routes connected, turning on routes
-            // caching in production could improve performance. For that when
-            // creating the middleware instance specify the cache config name by
-            // using it's second constructor argument:
-            // `new RoutingMiddleware($this, '_cake_routes_')`
+            // caching in production could improve performance.
+            // See https://github.com/CakeDC/cakephp-cached-routing
             ->add(new RoutingMiddleware($this))
 
             // Parse various types of encoded request bodies so that they are
@@ -100,7 +86,7 @@ class Application extends BaseApplication
             ->add(new BodyParserMiddleware())
 
             // Cross Site Request Forgery (CSRF) Protection Middleware
-            // https://book.cakephp.org/4/en/controllers/middleware.html#cross-site-request-forgery-csrf-middleware
+            // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
             ->add(new CsrfProtectionMiddleware([
                 'httponly' => true,
             ]));
@@ -117,22 +103,5 @@ class Application extends BaseApplication
      */
     public function services(ContainerInterface $container): void
     {
-    }
-
-    /**
-     * Bootstrapping for CLI application.
-     *
-     * That is when running commands.
-     *
-     * @return void
-     */
-    protected function bootstrapCli(): void
-    {
-        $this->addOptionalPlugin('Cake/Repl');
-        $this->addOptionalPlugin('Bake');
-
-        $this->addPlugin('Migrations');
-
-        // Load more plugins here
     }
 }
