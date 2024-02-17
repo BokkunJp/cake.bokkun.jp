@@ -24,7 +24,7 @@ class PostsController extends AppController
                 if ($post->execute($this->request->getData())) {
                     $this->request->getSession()->write('Data', $this->request->getData());
                 } else {
-                    $this->Flash->error('入力に問題があります。');
+                    // $this->Flash->error('入力に問題があります。');
                     $this->request->getSession()->destroy();
                 }
             }

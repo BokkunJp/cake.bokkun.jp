@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -15,58 +14,54 @@ declare(strict_types=1);
  * @since         3.3.0
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-
 namespace App\Test\TestCase;
 
 use App\Application;
+use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use Cake\TestSuite\IntegrationTestCase;
-use InvalidArgumentException;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * ApplicationTest class
  */
-class ApplicationTest extends IntegrationTestCase
+class ApplicationTest extends TestCase
 {
+    use IntegrationTestTrait;
+
     /**
-     * testBootstrap
+     * Test bootstrap in production.
      *
      * @return void
      */
     public function testBootstrap()
     {
-        $app = new Application(dirname(dirname(__DIR__)) . '/config');
+        Configure::write('debug', false);
+        $app = new Application(dirname(__DIR__, 2) . '/config');
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertCount(4, $plugins);
-        $this->assertSame('Cake/Repl', $plugins->get('Cake/Repl')->getName());
-        $this->assertSame('Bake', $plugins->get('Bake')->getName());
-        $this->assertSame('DebugKit', $plugins->get('DebugKit')->getName());
-        $this->assertSame('Migrations', $plugins->get('Migrations')->getName());
+        $this->assertTrue($plugins->has('Bake'), 'plugins has Bake?');
+        $this->assertFalse($plugins->has('DebugKit'), 'plugins has DebugKit?');
+        $this->assertTrue($plugins->has('Migrations'), 'plugins has Migrations?');
     }
 
     /**
-     * testBootstrapPluginWitoutHalt
+     * Test bootstrap add DebugKit plugin in debug mode.
      *
      * @return void
      */
-    public function testBootstrapPluginWithoutHalt()
+    public function testBootstrapInDebug()
     {
-        $this->expectException(InvalidArgumentException::class);
-
-        $app = $this->getMockBuilder(Application::class)
-            ->setConstructorArgs([dirname(dirname(__DIR__)) . '/config'])
-            ->onlyMethods(['addPlugin'])
-            ->getMock();
-
-        $app->method('addPlugin')
-            ->will($this->throwException(new InvalidArgumentException('test exception.')));
-
+        Configure::write('debug', true);
+        $app = new Application(dirname(__DIR__, 2) . '/config');
         $app->bootstrap();
+        $plugins = $app->getPlugins();
+
+        $this->assertTrue($plugins->has('DebugKit'), 'plugins has DebugKit?');
     }
 
     /**
@@ -76,7 +71,7 @@ class ApplicationTest extends IntegrationTestCase
      */
     public function testMiddleware()
     {
-        $app = new Application(dirname(dirname(__DIR__)) . '/config');
+        $app = new Application(dirname(__DIR__, 2) . '/config');
         $middleware = new MiddlewareQueue();
 
         $middleware = $app->middleware($middleware);
