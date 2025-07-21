@@ -41,7 +41,7 @@ jobs:
       uses: ramsey/composer-install@v2
       with:
         dependency-versions: ${{ matrix.dependencies }}
-        composer-options: ${{ matrix.composer-options }}
+        composer-options: ""
 
     - name: Composer post install
       run: composer run-script post-install-cmd --no-interaction
