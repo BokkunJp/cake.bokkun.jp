@@ -123,16 +123,18 @@ endif;
 
                         <?php if (extension_loaded('openssl')) : ?>
                             <li class="bullet success">Your version of PHP has the openssl extension loaded.</li>
-                        <?php elseif (extension_loaded('mcrypt')) : ?>
-                            <li class="bullet success">Your version of PHP has the mcrypt extension loaded.</li>
                         <?php else : ?>
-                            <li class="bullet problem">Your version of PHP does NOT have the openssl or mcrypt extension loaded.</li>
+                            <li class="bullet problem">Your version of PHP does NOT have the openssl extension loaded.</li>
                         <?php endif; ?>
 
                         <?php if (extension_loaded('intl')) : ?>
                             <li class="bullet success">Your version of PHP has the intl extension loaded.</li>
                         <?php else : ?>
                             <li class="bullet problem">Your version of PHP does NOT have the intl extension loaded.</li>
+                        <?php endif; ?>
+
+                        <?php if (ini_get('zend.assertions') !== '1') : ?>
+                            <li class="bullet problem">You should set <code>zend.assertions</code> to <code>1</code> in your <code>php.ini</code> for your development environment.</li>
                         <?php endif; ?>
                         </ul>
                     </div>
@@ -151,7 +153,7 @@ endif;
                             <li class="bullet problem">Your logs directory is NOT writable.</li>
                         <?php endif; ?>
 
-                        <?php $settings = Cache::getConfig('_cake_core_'); ?>
+                        <?php $settings = Cache::getConfig('_cake_translations_'); ?>
                         <?php if (!empty($settings)) : ?>
                             <li class="bullet success">The <em><?= h($settings['className']) ?></em> is being used for core caching. To change the config edit config/app.php</li>
                         <?php else : ?>
