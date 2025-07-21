@@ -74,4 +74,4 @@ jobs:
 
     - name: Run phpstan
       if: always()
-      run: phpstan
+      run: vendor/bin/phpstan analyse
