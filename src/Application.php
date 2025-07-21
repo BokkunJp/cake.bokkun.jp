@@ -49,10 +49,8 @@ class Application extends BaseApplication
         parent::bootstrap();
 
         if (PHP_SAPI !== 'cli') {
-            FactoryLocator::add(
-                'Table',
-                (new TableLocator())->allowFallbackClass(false)
-            );
+            // The bake plugin requires fallback table classes to work properly
+            FactoryLocator::add('Table', (new TableLocator())->allowFallbackClass(false));
         }
     }
 
@@ -82,11 +80,11 @@ class Application extends BaseApplication
 
             // Parse various types of encoded request bodies so that they are
             // available as array through $request->getData()
-            // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
+            // https://book.cakephp.org/5/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
 
             // Cross Site Request Forgery (CSRF) Protection Middleware
-            // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
+            // https://book.cakephp.org/5/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
             ->add(new CsrfProtectionMiddleware([
                 'httponly' => true,
             ]));
@@ -99,7 +97,7 @@ class Application extends BaseApplication
      *
      * @param \Cake\Core\ContainerInterface $container The Container to update.
      * @return void
-     * @link https://book.cakephp.org/4/en/development/dependency-injection.html#dependency-injection
+     * @link https://book.cakephp.org/5/en/development/dependency-injection.html#dependency-injection
      */
     public function services(ContainerInterface $container): void
     {
