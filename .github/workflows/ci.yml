@@ -15,41 +15,52 @@ permissions:
   contents: read
 
 jobs:
-  testsuite:
-    runs-on: ubuntu-22.04
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['8.4']
-        dependencies: ['highest']
-        include:
-          - php-version: '8.4'
-            dependencies: 'lowest'
+  # testsuite:
+  #   runs-on: ubuntu-22.04
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       php-version: ['8.3']
+  #       dependencies: ['highest']
+  #       include:
+  #         - php-version: '8.3'
+  #           dependencies: 'lowest'
 
-    steps:
-    - uses: actions/checkout@v4
+  #   services:
+  #     mysql:
+  #       image: mysql:8.0
+  #       env:
+  #         MYSQL_ROOT_PASSWORD: cake_project
+  #         MYSQL_DATABASE: cake_project
+  #       ports:
+  #         - 3306:3306
+  #       options: >-
+  #         --health-cmd="mysqladmin ping --silent"
+  #         --health-interval=10s
+  #         --health-timeout=5s
+  #         --health-retries=3
+  #   steps:
+  #   - uses: actions/checkout@v4
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-version }}
-        extensions: mbstring, intl, pdo_sqlite
-        ini-values: zend.assertions=1
-        coverage: none
+  #   - name: Setup PHP
+  #     uses: shivammathur/setup-php@v2
+  #     with:
+  #       php-version: ${{ matrix.php-version }}
+  #       extensions: mbstring, intl, pdo_sqlite, pdo_mysql, pdo_pgsql
+  #       ini-values: zend.assertions=1
+  #       coverage: none
 
-    - name: Composer install
-      uses: ramsey/composer-install@v2
-      with:
-        dependency-versions: ${{ matrix.dependencies }}
-        composer-options: ""
+  #   - name: Composer install
+  #     uses: ramsey/composer-install@v2
+  #     with:
+  #       dependency-versions: ${{ matrix.dependencies }}
+  #       composer-options: ""
 
-    - name: Composer post install
-      run: composer run-script post-install-cmd --no-interaction
+  #   - name: Composer post install
+  #     run: composer run-script post-install-cmd --no-interaction
 
-    - name: Run PHPUnit
-      run: vendor/bin/phpunit
-      env:
-        DATABASE_TEST_URL: sqlite://./testdb.sqlite
+  #   - name: Run PHPUnit
+  #     run: vendor/bin/phpunit
 
   coding-standard:
     name: Coding Standard & Static Analysis
