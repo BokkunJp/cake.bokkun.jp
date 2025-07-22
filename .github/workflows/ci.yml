@@ -33,7 +33,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
-        extensions: mbstring, intl, pdo_sqlite
+        extensions: mbstring, intl, pdo_sqlite, pdo_mysql, pdo_pgsql
         ini-values: zend.assertions=1
         coverage: none
 
