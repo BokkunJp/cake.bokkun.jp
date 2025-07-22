@@ -24,6 +24,7 @@ class TagsTableTest extends TestCase
      * @var list<string>
      */
     protected array $fixtures = [
+        'app.Users',
         'app.Tags',
         'app.Articles',
     ];
