@@ -26,6 +26,19 @@ jobs:
           - php-version: '8.3'
             dependencies: 'lowest'
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: cake_project
+          MYSQL_DATABASE: cake_project
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
     - uses: actions/checkout@v4
 
