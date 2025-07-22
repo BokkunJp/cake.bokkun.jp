@@ -20,10 +20,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.4']
+        php-version: ['8.3']
         dependencies: ['highest']
         include:
-          - php-version: '8.4'
+          - php-version: '8.3'
             dependencies: 'lowest'
 
     steps:
