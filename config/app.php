@@ -333,6 +333,13 @@ return [
             'quoteIdentifiers' => false,
             'log' => false,
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
+            'host' => 'localhost',
+            //'port' => 'non_standard_port_number',
+            'username' => 'cake_project',
+            'password' => 'cake_project',
+            'database' => 'cake_project',
+            //'schema' => 'myapp',
+            //'url' => env('DATABASE_TEST_URL', 'sqlite://127.0.0.1/tmp/tests.sqlite'),
         ],
     ],
 
