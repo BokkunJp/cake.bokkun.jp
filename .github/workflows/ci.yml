@@ -48,8 +48,6 @@ jobs:
 
     - name: Run PHPUnit
       run: vendor/bin/phpunit
-      env:
-        DATABASE_TEST_URL: sqlite://./testdb.sqlite
 
   coding-standard:
     name: Coding Standard & Static Analysis
